@@ -47,7 +47,7 @@
             ]
         },
         "subnet": {
-            "value": "nosubnet"
+            "value": ""
         }
     }
 }
