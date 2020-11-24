@@ -37,7 +37,7 @@
                 },
                 "parameters": {
                     "subnet": {
-                     "value": "[reference('VNet').outputs.resourceID.value]"
+                     "value": "[reference('VNet').outputs.resourceIDsubnet.value]"
                 }
         },
          "dependsOn": [
