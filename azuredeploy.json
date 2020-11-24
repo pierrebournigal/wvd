@@ -31,11 +31,14 @@
                     "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/wvd/wvd.json",
                     "contentVersion": "1.0.0.0"
                 },
-                "subnet": {
-                    "value": "[reference('Hub').outputs.resourceIDsubnet.value]"
-                },
-                "virtualNetworkId": {
-                    "value": "[reference('Hub').outputs.virtualNetworkID.value]"
+                "parameters": 
+                {
+                    "subnet": {
+                        "value": "[reference('Hub').outputs.resourceIDsubnet.value]"
+                    },
+                    "virtualNetworkId": {
+                        "value": "[reference('Hub').outputs.virtualNetworkID.value]"
+                    }
                 }
             },
             "dependsOn": [
