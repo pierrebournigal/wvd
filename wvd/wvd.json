@@ -1,14 +1,7 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-        "subnet": {
-            "type": "string"
-        },
-        "virtualNetworkId": {
-            "type": "string"
-        }        
-    },
+    "parameters": {},
     "functions": [],
     "variables": {},
     "resources": [
@@ -25,10 +18,10 @@
                 "parameters": 
                 {
                         "subnet": {
-                        "value": "[parameters('subnet')]"
+                        "value": "[reference('WVD').parameters.subnet.value]"
                     },
                         "virtualNetworkId": {
-                        "value": "[parameters('virtualNetworkId')]"
+                        "value": "[reference('WVD').parameters.virtualNetworkId.value]"
                     },
                         "location": {
                         "value": "francecentral"
