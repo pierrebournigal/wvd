@@ -18,10 +18,10 @@
                 "parameters": 
                 {
                         "subnet": {
-                        "value": "[reference('WVD').parameters.subnet.value]"
+                        "value": "[reference('WVD').parameters.subnet]"
                     },
                         "virtualNetworkId": {
-                        "value": "[reference('WVD').parameters.virtualNetworkId.value]"
+                        "value": "[reference('WVD').parameters.virtualNetworkId]"
                     },
                         "location": {
                         "value": "francecentral"
