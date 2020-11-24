@@ -17,6 +17,12 @@
                 },
                 "parameters": 
                 {
+                        "subnet": {
+                        "value": "[reference('Hub').outputs.resourceIDsubnet.value]"
+                    },
+                        "virtualNetworkId": {
+                        "value": "[reference('Hub').outputs.virtualNetworkID.value]"
+                    },
                         "location": {
                         "value": "francecentral"
                     },
