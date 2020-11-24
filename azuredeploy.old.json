@@ -8,15 +8,15 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-06-01",
-            "name": "Hub",
+            "name": "VNet",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/hub/nestedtemplates/hub.json",
+                    "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/hub/nestedtemplates/vnet.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parametersLink": {
-                    "uri":"https://raw.githubusercontent.com/pierrebournigal/wvd/master/hub/nestedtemplates/hub.parameters.json",
+                    "uri":"https://raw.githubusercontent.com/pierrebournigal/wvd/master/hub/nestedtemplates/vnet.parameters.json",
                     "contentVersion":"1.0.0.0"
                 }
             }
@@ -34,10 +34,10 @@
                 "parameters": 
                 {
                     "subnet": {
-                     "value": "[reference('Hub').outputs.resourceIDsubnet.value]"
+                     "value": "[reference('VNet').outputs.resourceIDsubnet.value]"
                 },
                      "virtualNetworkId": {
-                     "value": "[reference('Hub').outputs.virtualNetworkID.value]"
+                     "value": "[reference('VNet').outputs.virtualNetworkID.value]"
                 },
                     "location": {
                     "value": "francecentral"
