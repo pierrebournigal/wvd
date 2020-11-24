@@ -1,22 +1,7 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-        "_artifactsLocation": {
-            "type": "string",
-            "metadata": {
-                "description": "The location of resources, such as templates and DSC modules, that the template depends on"
-            },
-            "defaultValue": "[deployment().properties.templateLink.uri]"
-        },
-        "_artifactsLocationSasToken": {
-            "type": "securestring",
-            "metadata": {
-                "description": "Auto-generated token to access _artifactsLocation. Leave it blank unless you need to provide your own value."
-            },
-            "defaultValue": ""
-        }
-    },
+    "parameters": {},
     "functions": [],
     "variables": {},
     "resources": [
@@ -27,7 +12,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
+                    "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/nestedtemplates/vnet.json",
                     "contentVersion": "1.0.0.0"
                 }
             }
@@ -39,7 +24,7 @@
         "properties": {
             "mode": "Incremental",
             "templateLink": {
-                "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/fslogix.json', parameters('_artifactsLocationSasToken')))]",
+                "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/nestedtemplates/fslogix.json",
                 "contentVersion":"1.0.0.0"
             }
         }
