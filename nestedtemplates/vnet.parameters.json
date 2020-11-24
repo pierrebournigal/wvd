@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualNetworkName": {
+            "value": "vnet-hub"
+        },
+        "virtualNetworkAddressRange": {
+            "value": "172.16.0.0/16"
+        },
+        "subnetName": {
+            "value": "sub-hub-srv"
+        },
+        "subnetRange": {
+            "value": "172.16.0.0/24"
+        },
+        "location": {
+            "value": "francecentral" 
+        }
+    }
+}
