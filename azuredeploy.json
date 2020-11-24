@@ -12,86 +12,36 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/hub/nestedtemplates/hub.json",
+                    "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/hub/hub.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parametersLink": {
-                    "uri":"https://raw.githubusercontent.com/pierrebournigal/wvd/master/hub/nestedtemplates/hub.parameters.json",
+                    "uri":"https://raw.githubusercontent.com/pierrebournigal/wvd/master/hub/hub.parameters.json",
                     "contentVersion":"1.0.0.0"
                 }
             }
         },
         {
-        "type": "Microsoft.Resources/deployments",
-        "apiVersion": "2020-06-01",
-        "name": "StorageAccount",
-        "properties": {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "WVD",
+            "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/wvd/nestedtemplates/fslogix.json",
-                "contentVersion":"1.0.0.0"
+                    "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/wvd/wvd.json",
+                    "contentVersion": "1.0.0.0"
                 },
-                "parameters": 
-                {
-                    "subnet": {
-                     "value": "[reference('Hub').outputs.resourceIDsubnet.value]"
+                "subnet": {
+                    "value": "[reference('Hub').outputs.resourceIDsubnet.value]"
                 },
-                     "virtualNetworkId": {
-                     "value": "[reference('Hub').outputs.virtualNetworkID.value]"
-                },
-                    "location": {
-                    "value": "francecentral"
-                },
-                    "storageAccountName": {
-                    "value": "safslogixlambda"
-                },
-                    "accountType": {
-                    "value": "Premium_LRS"
-                },
-                    "kind": {
-                    "value": "FileStorage"
-                },
-                    "minimumTlsVersion": {
-                    "value": "TLS1_2"
-                },
-                    "supportsHttpsTrafficOnly": {
-                    "value": true
-                },
-                    "allowBlobPublicAccess": {
-                    "value": false
-                },
-                    "networkAclsBypass": {
-                    "value": "AzureServices"
-                },
-                    "networkAclsDefaultAction": {
-                    "value": "Allow"
-                },
-                    "isShareSoftDeleteEnabled": {
-                    "value": true
-                },
-                    "shareSoftDeleteRetentionDays": {
-                    "value": 7
-                },
-                    "privateEndpointName": {
-                    "value": "pvefslogix"
-                },
-                    "privateLinkResource": {
-                    "value": "[resourceId('Microsoft.Storage/storageAccounts','safslogixlambda')]"
-                },
-                    "targetSubResource": {
-                    "value": [
-                        "file"
-                    ]
-                },
-                    "fileShareName": {
-                    "value": "fslogix"
+                "virtualNetworkId": {
+                    "value": "[reference('Hub').outputs.virtualNetworkID.value]"
                 }
-        },
-         "dependsOn": [
-            "VNet"
-        ]
-    }
-    }
+            },
+            "dependsOn": [
+                "Hub"
+            ]
+        }
     ],
     "outputs": {}
 }

@@ -20,6 +20,22 @@
                     "contentVersion":"1.0.0.0"
                 }
             }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "LogAnalytics",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/hub/nestedtemplates/loganalytics.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parametersLink": {
+                    "uri":"https://raw.githubusercontent.com/pierrebournigal/wvd/master/hub/nestedtemplates/loganalytics.parameters.json",
+                    "contentVersion":"1.0.0.0"
+                }
+            }
         }
     ],
     "outputs": {
