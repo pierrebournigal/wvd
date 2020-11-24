@@ -14,10 +14,16 @@
         "targetSubResource": {
             "type": "array"
         },
+        "requestMessage": {
+            "type": "string"
+        },
         "subnet": {
             "type": "string"
         },
         "virtualNetworkId": {
+            "type": "string"
+        },
+        "virtualNetworkResourceGroup": {
             "type": "string"
         },
         "subnetDeploymentName": {
@@ -28,33 +34,6 @@
         }
     },
     "resources": [
-        {
-            "location": "[parameters('location')]",
-            "name": "[parameters('privateEndpointName')]",
-            "type": "Microsoft.Network/privateEndpoints",
-            "apiVersion": "2020-03-01",
-            "properties": {
-                "subnet": {
-                    "id": "[parameters('subnet')]"
-                },
-                "privateLinkServiceConnections": [
-                    {
-                        "name": "[parameters('privateEndpointName')]",
-                        "properties": {
-                            "privateLinkServiceId": "[parameters('privateLinkResource')]",
-                            "groupIds": "[parameters('targetSubResource')]"
-                        }
-                    }
-                ]
-            },
-            "tags": {
-                "Env": "Production",
-                "Context": "WVD"
-            },
-            "dependsOn": [
-                "[parameters('subnetDeploymentName')]"
-            ]
-        },
         {
             "apiVersion": "2017-05-10",
             "name": "[parameters('privateDnsDeploymentName')]",
@@ -70,7 +49,7 @@
                     "resources": [
                         {
                             "apiVersion": "2017-05-10",
-                            "name": "PrivateDnsZone-042879da-14db-4d54-87cc-7268c8207024",
+                            "name": "PrivateDnsZone-8ec95c23-b335-4a14-aa6d-6f1099bec01d",
                             "type": "Microsoft.Resources/deployments",
                             "subscriptionId": "e929f5bc-76e9-4e4c-b3c6-16522f34926b",
                             "resourceGroup": "rg-hub",
@@ -98,7 +77,7 @@
         },
         {
             "apiVersion": "2017-05-10",
-            "name": "VirtualNetworkLink-20201124135732",
+            "name": "VirtualNetworkLink-20201124141424",
             "type": "Microsoft.Resources/deployments",
             "dependsOn": [
                 "[parameters('privateDnsDeploymentName')]"
@@ -111,7 +90,7 @@
                     "resources": [
                         {
                             "apiVersion": "2017-05-10",
-                            "name": "VirtualNetworklink-042879da-14db-4d54-87cc-7268c8207025",
+                            "name": "VirtualNetworklink-8ec95c23-b335-4a14-aa6d-6f1099bec01e",
                             "type": "Microsoft.Resources/deployments",
                             "subscriptionId": "e929f5bc-76e9-4e4c-b3c6-16522f34926b",
                             "resourceGroup": "rg-hub",
@@ -143,7 +122,7 @@
         },
         {
             "apiVersion": "2017-05-10",
-            "name": "DnsZoneGroup-20201124135732",
+            "name": "DnsZoneGroup-20201124141424",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "rg-hub",
             "dependsOn": [

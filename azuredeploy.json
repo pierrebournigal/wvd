@@ -36,6 +36,9 @@
                     "subnet": {
                      "value": "[reference('VNet').outputs.resourceIDsubnet.value]"
                 },
+                     "virtualNetworkId": {
+                     "value": "[reference('VNet').outputs.virtualNetworkID.value]"
+                },
                     "location": {
                     "value": "francecentral"
                 },
