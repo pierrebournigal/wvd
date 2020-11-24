@@ -18,10 +18,10 @@
                 "parameters": 
                 {
                         "subnet": {
-                        "value": "[reference('Hub').outputs.resourceIDsubnet.value]"
+                        "value": "[parameters('subnet')]"
                     },
                         "virtualNetworkId": {
-                        "value": "[reference('Hub').outputs.virtualNetworkID.value]"
+                        "value": "[parameters('virtualNetworkId')]"
                     },
                         "location": {
                         "value": "francecentral"
