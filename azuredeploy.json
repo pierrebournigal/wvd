@@ -14,6 +14,10 @@
                 "templateLink": {
                     "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/nestedtemplates/vnet.json",
                     "contentVersion": "1.0.0.0"
+                },
+                "parametersLink": {
+                    "uri":"https://raw.githubusercontent.com/pierrebournigal/wvd/master/nestedtemplates/vnet.parameters.json",
+                    "contentVersion":"1.0.0.0"
                 }
             }
         },
@@ -22,12 +26,24 @@
         "apiVersion": "2020-06-01",
         "name": "StorageAccount",
         "properties": {
-            "mode": "Incremental",
-            "templateLink": {
+                "mode": "Incremental",
+                "templateLink": {
                 "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/nestedtemplates/fslogix.json",
                 "contentVersion":"1.0.0.0"
-            }
-        }
+                },
+                "parametersLink": {
+                    "uri":"https://raw.githubusercontent.com/pierrebournigal/wvd/master/nestedtemplates/fslogix.parameters.json",
+                    "contentVersion":"1.0.0.0"
+                },
+                "parameters": {
+                    "subnet": {
+                     "value": "[reference('VNet').outputs.resourceID.value]"
+                }
+        },
+         "dependsOn": [
+            "VNet"
+        ]
+    }
     }
     ],
     "outputs": {}
