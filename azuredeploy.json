@@ -82,6 +82,9 @@
                     "value": [
                         "file"
                     ]
+                },
+                    "fileShareName": {
+                    "value": "fslogix"
                 }
         },
          "dependsOn": [
