@@ -2,20 +2,37 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "virtualNetworkName": {
-            "value": "vnet-hub"
-        },
-        "virtualNetworkAddressRange": {
-            "value": "172.16.0.0/16"
-        },
-        "subnetName": {
-            "value": "sub-hub-srv"
-        },
-        "subnetRange": {
-            "value": "172.16.0.0/24"
+        "VNetSettings":{
+            "value":{
+                "name":"vnet-hub",
+                "addressPrefixes": [
+                    {
+                        "name": "firstPrefix",
+                        "addressPrefix": "172.16.0.0/16"
+                    }
+                ],
+                "subnets":[
+                    {
+                        "name": "sub-hub-srv",
+                        "addressPrefix": "172.16.0.0/24"
+                    },
+                    {
+                        "name": "sub-hub-iam",
+                        "addressPrefix": "172.16.1.0/24"
+                    },
+                    {
+                        "name": "sub-hub-mgmt",
+                        "addressPrefix": "172.16.2.0/24"
+                    },
+                    {
+                        "name": "GatewaySubnet",
+                        "addressPrefix": "172.16.3.0/24"
+                    }
+                ]
+            }
         },
         "location": {
-            "value": "francecentral" 
+            "value": "francecentral"
         }
     }
 }

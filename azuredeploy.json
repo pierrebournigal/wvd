@@ -44,7 +44,7 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-06-01",
-            "name": "WVD",
+            "name": "Fslogix",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -52,8 +52,11 @@
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
+                    "storageAccountName": {
+                        "value": "[parameters('storageAccountName')]"
+                    },
                     "subnet": {
-                        "value": "[reference('Networking').outputs.resourceIDsubnet.value]"
+                        "value": "[reference('Networking').outputs.srvSubnetId.value]"
                     },
                     "virtualNetworkId": {
                         "value": "[reference('Networking').outputs.virtualNetworkID.value]"
@@ -105,7 +108,7 @@
                 }
             },
             "dependsOn": [
-                "Vnet"
+                "Networking"
             ]
         }
     ],

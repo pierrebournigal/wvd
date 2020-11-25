@@ -1,86 +1,83 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-      "virtualNetworkName": {
-        "type": "string",
-        "metadata": {
-          "description": "The name of the Virtual Network to Create"
-        }
-      },
-      "virtualNetworkAddressRange": {
-        "type": "string",
-        "metadata": {
-          "description": "The address range of the new VNET in CIDR format"
-        }
-      },
-      "subnetName": {
-        "type": "string",
-        "metadata": {
-          "description": "The name of the subnet created in the new VNET"
-        }
-      },
-      "subnetRange": {
-        "type": "string",
-        "metadata": {
-          "description": "The address range of the subnet created in the new VNET"
-        }
-      },
-      "DNSServerAddress": {
-        "type": "array",
-        "defaultValue": [],
-        "metadata": {
-          "description": "The DNS address(es) of the DNS Server(s) used by the VNET"
-        }
-      },
-      "location": {
-        "type": "string",
-        "metadata": {
-          "description": "Location for all resources."
-        }
-    }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "VNetSettings": {
+      "type": "object"
     },
-    "functions": [],
-    "variables": {
-        "dhcpOptions": {
-        "dnsServers": "[parameters('DNSServerAddress')]"
-    }
+    "DNSServerAddress": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "The DNS address(es) of the DNS Server(s) used by the VNET"
+      }
     },
-    "resources": [
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Location for all resources."
+      }
+    }
+  },
+  "functions": [],
+  "variables": {
+    "dhcpOptions": {
+      "dnsServers": "[parameters('DNSServerAddress')]"
+    }
+  },
+  "resources": [
     {
       "type": "Microsoft.Network/virtualNetworks",
-      "name": "[parameters('virtualNetworkName')]",
+      "name": "[parameters('VNetSettings').name]",
       "apiVersion": "2020-05-01",
       "location": "[parameters('location')]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
-            "[parameters('virtualNetworkAddressRange')]"
+            "[parameters('VNetSettings').addressPrefixes['firstPrefix'].addressPrefix]"
           ]
         },
         "dhcpOptions": "[if(not(empty(parameters('DNSServerAddress'))), variables('dhcpOptions'), json('null'))]",
         "subnets": [
           {
-            "name": "[parameters('subnetName')]",
+            "name": "[parameters('VNetSettings').subnets['sub-hub-srv'].name]",
             "properties": {
-              "addressPrefix": "[parameters('subnetRange')]",
+              "addressPrefix": "[parameters('VNetSettings').subnets['sub-hub-srv'].addressPrefix]",
               "delegations": [],
               "privateEndpointNetworkPolicies": "Disabled",
               "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+          },
+          {
+            "name": "[parameters('VNetSettings').subnets['sub-hub-iam'].name]",
+            "properties": {
+              "addressPrefix": "[parameters('VNetSettings').subnets['sub-hub-iam'].addressPrefix]"
+            }
+          },
+          {
+            "name": "[parameters('VNetSettings').subnets['sub-hub-srv'].name]",
+            "properties": {
+              "addressPrefix": "[parameters('VNetSettings').subnets['sub-hub-mgmt'].addressPrefix]"
+            }
+          },
+          {
+            "name": "[parameters('VNetSettings').subnets['GatewaySubnet'].name]",
+            "properties": {
+              "addressPrefix": "[parameters('VNetSettings').subnets['GatewaySubnet'].addressPrefix]"
             }
           }
         ]
       }
     }
-    ],
-    "outputs": {
-    "resourceIDsubnet": {
+  ],
+  "outputs": {
+    "srvSubnetId": {
       "type": "string",
-      "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('virtualNetworkName'), parameters('subnetName'))]"
+      "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('VNetSettings').name, parameters('VNetSettings').subnets['sub-hub-srv'].name)]"
     },
     "virtualNetworkID": {
       "type": "string",
-      "value": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]"
+      "value": "[resourceId('Microsoft.Network/virtualNetworks',parameters('VNetSettings').name)]"
     }
-    }
+  }
 }
