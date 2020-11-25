@@ -73,7 +73,11 @@
   "outputs": {
     "srvSubnetId": {
       "type": "string",
-      "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('VNetSettings').name, parameters('VNetSettings').subnets['sub-hub-srv'].name)]"
+      "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('VNetSettings').name, parameters('VNetSettings').subnets[0].name)]"
+    },
+    "mgmtSubnetId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('VNetSettings').name, parameters('VNetSettings').subnets[2].name)]"
     },
     "virtualNetworkID": {
       "type": "string",

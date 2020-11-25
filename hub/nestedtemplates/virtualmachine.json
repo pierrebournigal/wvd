@@ -1,0 +1,138 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string"
+        },
+        "virtualMachineName": {
+            "type": "string"
+        },
+        "environment": {
+            "type": "string"
+        },
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the administrator account of the new VM and domain"
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "The password for the administrator account of the new VM and domain"
+            }
+        },
+        "vmSize": {
+            "type": "string",
+            "defaultValue": "Standard_D2s_v4",
+            "metadata": {
+                "description": "Size of the VM for the controller"
+            }
+        },
+        "privateIPAddress": {
+            "type": "string"
+        },
+        "subnetId": {
+            "type": "string"
+        }
+    },
+    "functions": [],
+    "variables": {
+        "vmName": "[concat('vm',parameters('virtualMachineName'),parameters('environment'))]",
+        "networkInterfaceName": "[concat(variables('vmName'),'-nic')]",
+        "publicIPAddressName": "[concat(variables('vmName'),'-pip')]",
+        "dnsPrefix": "[concat(parameters('virtualMachineName'),'-', uniqueString(resourceGroup().id))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2020-05-01",
+            "name": "[variables('publicIPAddressName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publicIPAllocationMethod": "Static",
+                "dnsSettings": {
+                    "domainNameLabel": "[variables('dnsPrefix')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-05-01",
+            "name": "[variables('networkInterfaceName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIpAddressVersion": "IPv4",
+                            "privateIPAllocationMethod": "Static",
+                            "subnet": {
+                                "id": "[parameters('subnetId')]"
+                            },
+                            "privateIPAddress": "[parameters('privateIPAddress')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2019-07-01",
+            "name": "[variables('vmName')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[variables('networkInterfaceName')]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('vmSize')]"
+                },
+                "osProfile": {
+                    "computerName": "[variables('vmName')]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "adminPassword": "[parameters('adminPassword')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2019-Datacenter",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "[concat(variables('vmName'),'_OSDisk')]",
+                        "caching": "ReadOnly",
+                        "createOption": "FromImage",
+                        "managedDisk": {
+                            "storageAccountType": "StandardSSD_LRS"
+                        }
+                    },
+                    "dataDisks": [
+                        {
+                            "name": "[concat(variables('vmName'), '_DataDisk')]",
+                            "caching": "ReadWrite",
+                            "createOption": "Empty",
+                            "diskSizeGB": 50,
+                            "managedDisk": {
+                                "storageAccountType": "StandardSSD_LRS"
+                            },
+                            "lun": 0
+                        }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]"
+                        }
+                    ]
+                }
+            },
+            "resources": []
+        }
+    ],
+    "outputs": {}
+}

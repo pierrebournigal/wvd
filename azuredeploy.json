@@ -110,6 +110,47 @@
             "dependsOn": [
                 "Networking"
             ]
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "Jumpbox",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/hub/nestedtemplates/virtualmachine.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "location": {
+                        "value": "francecentral" 
+                    },
+                    "virtualMachineName": {
+                        "value": "jmpbox" 
+                    },
+                    "environment": {
+                        "value": "prd" 
+                    },
+                    "adminUsername": {
+                        "value": "pboadmin" 
+                    },
+                    "adminPassword": {
+                        "value": "pbopassword123!" 
+                    },
+                    "vmSize": {
+                        "value": "Standard_D2s_v4"
+                    },
+                    "privateIPAddress": {
+                        "value": "172.16.2.4" 
+                    },
+                    "subnetId": {
+                        "value": "[reference('Networking').outputs.mgmtSubnetId.value]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "Networking"
+            ]
         }
     ],
     "outputs": {}
