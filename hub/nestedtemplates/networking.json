@@ -55,7 +55,7 @@
             }
           },
           {
-            "name": "[parameters('VNetSettings').subnets['sub-hub-srv'].name]",
+            "name": "[parameters('VNetSettings').subnets['sub-hub-mgmt'].name]",
             "properties": {
               "addressPrefix": "[parameters('VNetSettings').subnets['sub-hub-mgmt'].addressPrefix]"
             }
