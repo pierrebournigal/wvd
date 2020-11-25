@@ -1,23 +1,43 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {},
+    "parameters": {
+        "storageAccountName": {
+            "type": "string"
+        }
+    },
     "functions": [],
     "variables": {},
     "resources": [
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-06-01",
-            "name": "Hub",
+            "name": "Networking",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/hub/hub.json",
+                    "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/hub/nestedtemplates/networking.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parametersLink": {
-                    "uri":"https://raw.githubusercontent.com/pierrebournigal/wvd/master/hub/hub.parameters.json",
-                    "contentVersion":"1.0.0.0"
+                    "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/hub/nestedtemplates/networking.parameters.json",
+                    "contentVersion": "1.0.0.0"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-06-01",
+            "name": "LogAnalytics",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/hub/nestedtemplates/loganalytics.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parametersLink": {
+                    "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/hub/nestedtemplates/loganalytics.parameters.json",
+                    "contentVersion": "1.0.0.0"
                 }
             }
         },
@@ -28,21 +48,64 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/wvd/wvd.json",
+                    "uri": "https://raw.githubusercontent.com/pierrebournigal/wvd/master/wvd/nestedtemplates/fslogix.json",
                     "contentVersion": "1.0.0.0"
                 },
-                "parameters": 
-                {
+                "parameters": {
                     "subnet": {
-                        "value": "[reference('Hub').outputs.resourceIDsubnet.value]"
+                        "value": "[reference('Networking').outputs.resourceIDsubnet.value]"
                     },
                     "virtualNetworkId": {
-                        "value": "[reference('Hub').outputs.virtualNetworkID.value]"
+                        "value": "[reference('Networking').outputs.virtualNetworkID.value]"
+                    },
+                    "location": {
+                        "value": "francecentral"
+                    },
+                    "accountType": {
+                        "value": "Premium_LRS"
+                    },
+                    "kind": {
+                        "value": "FileStorage"
+                    },
+                    "minimumTlsVersion": {
+                        "value": "TLS1_2"
+                    },
+                    "supportsHttpsTrafficOnly": {
+                        "value": true
+                    },
+                    "allowBlobPublicAccess": {
+                        "value": false
+                    },
+                    "networkAclsBypass": {
+                        "value": "AzureServices"
+                    },
+                    "networkAclsDefaultAction": {
+                        "value": "Allow"
+                    },
+                    "isShareSoftDeleteEnabled": {
+                        "value": true
+                    },
+                    "shareSoftDeleteRetentionDays": {
+                        "value": 7
+                    },
+                    "privateEndpointName": {
+                        "value": "pvefslogix"
+                    },
+                    "privateLinkResource": {
+                        "value": "[resourceId('Microsoft.Storage/storageAccounts',parameters('storageAccountName'))]"
+                    },
+                    "targetSubResource": {
+                        "value": [
+                            "file"
+                        ]
+                    },
+                    "fileShareName": {
+                        "value": "fslogix"
                     }
                 }
             },
             "dependsOn": [
-                "Hub"
+                "Vnet"
             ]
         }
     ],
